@@ -81,6 +81,26 @@ h1 {
     line-height: 1.58;
 }
 
+.project-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    margin-top: clamp(1rem, 2.2svh, 1.35rem);
+    color: var(--accent-orchid);
+    font-family: var(--font-body);
+    font-size: 0.84rem;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(110, 76, 88, 0.34);
+    padding-bottom: 0.18rem;
+    transition: gap 0.25s ease, color 0.25s ease, border-bottom-color 0.25s ease;
+}
+
+.project-link:hover {
+    gap: 0.68rem;
+    color: var(--text-main);
+    border-bottom-color: var(--accent-orchid);
+}
+
 .cipher-card {
     border: 1px solid var(--border-color);
     border-radius: 1.75rem;
