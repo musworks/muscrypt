@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Muscrypt • Experimental Text Abstraction</title>
     <meta name="description" content="Muscrypt adalah eksperimen transformasi teks yang mengubah tulisan menjadi pola simbolik menggunakan pemetaan Monoalphabetic Substitution Cipher">
-    <meta name="theme-color" content="#fcfbfa">
+    <meta name="theme-color" content="#160d1b">
     <meta name="color-scheme" content="light dark">
     <link rel="canonical" href="https://muscrypt.musnotes.my.id/">
 
@@ -31,11 +31,15 @@
     <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
     <link rel="apple-touch-icon" href="favicon/apple-touch-icon.png">
-    <link rel="stylesheet" href="style.css?v=20260916">
+    <link rel="stylesheet" href="style.css?v=20260917">
 </head>
-<body>
+<body class="terminal-body">
     <main class="page-shell">
         <header class="hero">
+            <div class="machine-meta" aria-hidden="true">
+                <span class="machine-code">MSCRYPT / 01</span>
+                <span class="machine-rule"></span>
+            </div>
             <p class="eyebrow">Experimental text abstraction</p>
             <h1>Muscrypt</h1>
             <p class="sub-title">Apakah kita sepakat bahwa ekspresi dalam bentuk tulisan adalah teks yang menyampaikan pikiran atau perasaan secara langsung dan jelas? Sayangnya, beberapa hal...hanya ingin dipahami oleh dirinya sendiri.</p>
@@ -45,38 +49,66 @@
         </header>
 
         <section class="cipher-card" aria-label="Muscrypt cipher tool">
-            <div class="card-frame">
-                <div class="card-intro">
-                    <p class="section-label">Ruang Ekspresi</p>
-                    <p class="section-copy">Tulis ungkapanmu, lalu pilih apakah kamu ingin menyembunyikannya atau mengembalikannya ke bentuk yang bisa dibaca dan di interpretasikan.</p>
+            <div class="terminal-bar">
+                <span class="terminal-bar-mark" aria-hidden="true"><span></span><span></span></span>
+                <span class="terminal-bar-title">SYMBOLIC MACHINE</span>
+                <div class="terminal-bar-details">
+                    <span class="terminal-bar-id">LOCAL / PRIVATE</span>
+                    <span id="machineState" class="machine-state" data-state="dormant" role="status" aria-live="polite"><span class="state-mark" aria-hidden="true"></span>STATE: DORMANT</span>
+                    <span id="depthReadout" class="depth-readout" aria-live="polite">DEPTH: 00</span>
                 </div>
+            </div>
+            <div class="card-frame">
+                <div class="input-chamber">
+                    <div class="card-intro">
+                        <div class="chamber-heading">
+                            <span class="chamber-number">01</span>
+                            <span class="chamber-line"></span>
+                            <span class="chamber-state">INPUT CHAMBER</span>
+                        </div>
+                        <p class="section-label">Ruang Ekspresi</p>
+                    </div>
 
-                <div class="input-group">
-                    <label for="inputText">Apa yang ingin kamu ekspresikan?</label>
-                    <textarea id="inputText" rows="5" placeholder="Tulis sesuatu yang belum siap kamu ucapkan keras-keras, atau tempel teks yang ingin kamu tafsirkan ulang."></textarea>
-                    <div class="input-tools" aria-label="Bantuan input">
-                        <button id="btnExample" class="input-tool-button" type="button">Coba contoh</button>
-                        <button id="btnSwap" class="input-tool-button" type="button">⇄ Tukar</button>
-                        <button id="btnClear" class="input-tool-button" type="button">Bersihkan</button>
+                    <div class="input-group">
+                        <label for="inputText">Apa yang ingin kamu ekspresikan?</label>
+                        <textarea id="inputText" rows="5" placeholder="Tulis sesuatu yang belum siap kamu ucapkan keras-keras, atau tempel teks yang ingin kamu tafsirkan ulang."></textarea>
+                        <div class="input-tools" aria-label="Bantuan input">
+                            <button id="btnExample" class="input-tool-button" type="button">Coba contoh</button>
+                            <button id="btnSwap" class="input-tool-button" type="button">⇄ Tukar</button>
+                            <button id="btnClear" class="input-tool-button" type="button">Bersihkan</button>
+                        </div>
                     </div>
                 </div>
 
                 <div class="mode-stage" aria-label="Pilihan proses">
+                    <div class="operation-heading" aria-hidden="true">
+                        <span class="chamber-number">02</span>
+                        <span class="chamber-line"></span>
+                        <span class="chamber-state">OPERATION</span>
+                    </div>
                     <div class="mode-selector" role="radiogroup" aria-label="Pilih cara memperlakukan teks">
                         <button id="btnEncode" class="mode-button" type="button" role="radio" aria-checked="true" data-mode="hide">Sembunyikan</button>
                         <button id="btnDecode" class="mode-button" type="button" role="radio" aria-checked="false" data-mode="interpret">Interpretasikan</button>
                     </div>
-                    <button id="btnProcess" class="process-button" type="button">Sembunyikan</button>
                 </div>
-
-                <p class="cipher-disclaimer">Muscrypt is an experimental symbolic cipher for personal expression, not a secure encryption tool.</p>
 
                 <div class="input-group output-group">
                     <div class="output-head">
+                        <div class="output-heading">
+                            <div class="chamber-heading">
+                                <span class="chamber-number">03</span>
+                                <span class="chamber-line"></span>
+                                <span class="chamber-state">OUTPUT CHAMBER</span>
+                            </div>
                         <label for="outputText" id="outputLabel">Teks yang hanya dimengerti oleh teks itu sendiri :)</label>
+                        </div>
                         <button id="btnCopy" class="copy-button" type="button">Copy</button>
                     </div>
                     <textarea id="outputText" rows="6" readonly placeholder="Belum ada tanda atau tafsir..."></textarea>
+                </div>
+
+                <div class="card-footer">
+                    <p class="cipher-disclaimer">Muscrypt is an experimental symbolic cipher for personal expression, not a secure encryption tool.</p>
                 </div>
             </div>
         </section>
