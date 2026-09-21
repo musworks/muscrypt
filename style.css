@@ -464,6 +464,8 @@ textarea {
     min-height: 120px;
     max-height: 240px;
     overflow-y: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
     resize: none;
     border: 1px solid var(--border-color);
     border-radius: 2px;
@@ -473,6 +475,10 @@ textarea {
     caret-color: var(--accent-bright);
     padding: clamp(0.85rem, 1.5vw, 1.1rem);
     transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+textarea::-webkit-scrollbar {
+    display: none;
 }
 
 textarea:hover {
