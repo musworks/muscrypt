@@ -37,9 +37,10 @@ function decode(code) {
 const inputText = document.getElementById('inputText');
 const outputText = document.getElementById('outputText');
 const outputLabel = document.getElementById('outputLabel');
+const machineState = document.getElementById('machineState');
+const depthReadout = document.getElementById('depthReadout');
 const btnEncode = document.getElementById('btnEncode');
 const btnDecode = document.getElementById('btnDecode');
-const btnProcess = document.getElementById('btnProcess');
 const btnCopy = document.getElementById('btnCopy');
 const btnExample = document.getElementById('btnExample');
 const btnSwap = document.getElementById('btnSwap');
@@ -50,15 +51,17 @@ let activeMode = 'hide';
 let copyFeedbackTimer;
 let swapFeedbackTimer;
 let outputPulseTimer;
+let transformationTimer;
+let depth = 0;
+
+const transformationDuration = 420;
 
 const modeConfig = {
     hide: {
-        buttonText: 'Sembunyikan',
         labelText: 'Teks yang hanya dimengerti oleh teks itu sendiri.',
         transform: encode
     },
     interpret: {
-        buttonText: 'Interpretasikan',
         labelText: 'Teks yang bisa kamu interpretasikan.',
         transform: decode
     }
@@ -105,12 +108,37 @@ function updateUI() {
     btnDecode.classList.toggle('is-active', !isHideMode);
     btnEncode.setAttribute('aria-checked', String(isHideMode));
     btnDecode.setAttribute('aria-checked', String(!isHideMode));
-    btnProcess.textContent = modeConfig[activeMode].buttonText;
 }
 
 function setMode(mode) {
     activeMode = mode;
     updateUI();
+}
+
+function setMachineState(state) {
+    window.clearTimeout(transformationTimer);
+
+    const normalizedState = state.toLowerCase();
+    machineState.dataset.state = normalizedState;
+    machineState.innerHTML = `<span class="state-mark" aria-hidden="true"></span>STATE: ${normalizedState.toUpperCase()}`;
+}
+
+function updateDepthReadout() {
+    depthReadout.textContent = `DEPTH: ${String(depth).padStart(2, '0')}`;
+}
+
+function presentTransformation() {
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (reducedMotion) {
+        setMachineState('DORMANT');
+        return;
+    }
+
+    setMachineState('TRANSMUTING');
+    transformationTimer = window.setTimeout(() => {
+        setMachineState('DORMANT');
+    }, transformationDuration);
 }
 
 function setOutput(value, labelText = outputLabel.innerText) {
@@ -121,6 +149,7 @@ function setOutput(value, labelText = outputLabel.innerText) {
     outputText.classList.toggle('is-empty', !value);
     outputText.classList.toggle('has-output', Boolean(value));
     btnCopy.classList.toggle('is-ready', Boolean(value));
+    resizeTextarea(outputText);
 
     if (value) {
         outputText.classList.add('is-fresh');
@@ -130,6 +159,11 @@ function setOutput(value, labelText = outputLabel.innerText) {
     } else {
         outputText.classList.remove('is-fresh');
     }
+}
+
+function resizeTextarea(textarea) {
+    textarea.style.height = 'auto';
+    textarea.style.height = `${Math.min(textarea.scrollHeight, 240)}px`;
 }
 
 function scrollOutputIntoView() {
@@ -154,13 +188,28 @@ function processText() {
 
     const config = modeConfig[activeMode];
     setOutput(config.transform(teksInput), config.labelText);
+
+    if (activeMode === 'hide') {
+        depth = Math.min(depth + 1, 99);
+    } else {
+        depth = 0;
+    }
+
+    updateDepthReadout();
+    presentTransformation();
     scrollOutputIntoView();
 }
 
-btnEncode.addEventListener('click', () => setMode('hide'));
-btnDecode.addEventListener('click', () => setMode('interpret'));
+btnEncode.addEventListener('click', () => {
+    setMode('hide');
+    processText();
+});
+btnDecode.addEventListener('click', () => {
+    setMode('interpret');
+    processText();
+});
 
-btnProcess.addEventListener('click', processText);
+inputText.addEventListener('input', () => resizeTextarea(inputText));
 
 async function copyOutput() {
     const teksOutput = outputText.value;
@@ -188,6 +237,7 @@ btnCopy.addEventListener('click', copyOutput);
 
 btnExample.addEventListener('click', () => {
     inputText.value = exampleText;
+    resizeTextarea(inputText);
     inputText.focus();
     inputText.setSelectionRange(inputText.value.length, inputText.value.length);
 });
@@ -200,6 +250,7 @@ btnSwap.addEventListener('click', () => {
     }
 
     inputText.value = outputText.value;
+    resizeTextarea(inputText);
     inputText.focus();
     inputText.setSelectionRange(inputText.value.length, inputText.value.length);
     setSwapButtonText('Dipindah');
@@ -208,13 +259,18 @@ btnSwap.addEventListener('click', () => {
 
 btnClear.addEventListener('click', () => {
     inputText.value = '';
+    resizeTextarea(inputText);
     setOutput('', 'Teks yang hanya dimengerti oleh teks itu sendiri :)');
+    setMachineState('DORMANT');
     resetCopyButton();
     resetSwapButton();
     inputText.focus();
 });
 
 setOutput('');
+resizeTextarea(inputText);
+setMachineState('DORMANT');
+updateDepthReadout();
 updateUI();
 
 function initMusCustomCursor() {
