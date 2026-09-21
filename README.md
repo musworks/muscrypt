@@ -4,8 +4,6 @@ Muscrypt is a static microsite for transforming personal text through a simple s
 
 Muscrypt is an experimental symbolic cipher for personal expression, not a secure encryption tool.
 
-![Screenshot](screenshot.png)
-
 ## File Structure
 
 - `index.html` - main page structure
