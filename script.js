@@ -1,10 +1,8 @@
-// script.js
 
-// String karakter QWERTY dan Alphabet biasa
 const qwertyChars = "QWERTYUIOPASDFGHJKLZXCVBNM";
 
 const abcChars    = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-// Membuat objek (setara dictionary di Python) otomatis
+
 const encodeMap = {};
 const decodeMap = {};
 
@@ -13,16 +11,16 @@ for (let i = 0; i < qwertyChars.length; i++) {
     decodeMap[abcChars[i]] = qwertyChars[i];
 }
 
-// Fungsi Encode
+
 function encode(text) {
     return text
         .toUpperCase()
-        .split('') // Memecah string menjadi array karakter
-        .map(ch => encodeMap[ch] || ch) // Jika karakter ada di map, ganti. Jika tidak, biarkan (angka/spasi).
-        .join(''); // Gabungkan kembali menjadi string
+        .split('') 
+        .map(ch => encodeMap[ch] || ch) 
+        .join(''); 
 }
 
-// Fungsi Decode
+
 function decode(code) {
     return code
         .toUpperCase()
@@ -31,9 +29,7 @@ function decode(code) {
         .join('');
 }
 
-// === PENGHUBUNG HTML & JAVASCRIPT (DOM MANIPULATION) ===
 
-// Mengambil elemen-elemen dari HTML berdasarkan ID
 const inputText = document.getElementById('inputText');
 const outputText = document.getElementById('outputText');
 const outputLabel = document.getElementById('outputLabel');
